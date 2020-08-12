@@ -1,7 +1,10 @@
 package ca.mec.productimage.dao;
 
+import ca.mec.productimage.exception.RestTemplateResponseErrorHandler;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,8 +13,13 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class ImageColorDAO {
 
-  public String getColors(String url) throws IOException {
-    RestTemplate restTemplate = new RestTemplate();
+  @Autowired
+  private RestTemplateBuilder restTemplateBuilder;
+
+  public String getColors(String url){
+    RestTemplate restTemplate = restTemplateBuilder
+        .errorHandler(new RestTemplateResponseErrorHandler())
+        .build();
     ResponseEntity<String> responseEntity = restTemplate.getForEntity(
         url+"?palette=json", String.class);
     return responseEntity.getBody();

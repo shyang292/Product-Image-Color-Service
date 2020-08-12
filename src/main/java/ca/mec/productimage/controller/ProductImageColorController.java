@@ -23,7 +23,6 @@ public class ProductImageColorController {
 
   @GetMapping("/{keyword}")
   public List<ProductDTO> testDAO(@PathVariable String keyword) throws IOException {
-    System.out.println("this is Controller layer");
     return productImageColourService.getProductImageColour(keyword);
   }
 
