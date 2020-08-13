@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -12,10 +13,13 @@ import lombok.Data;
 public class Product {
 
   @JsonProperty("product_code")
+  @NotBlank(message = "product code is mandatory")
   private String code;
 
+  @NotBlank(message = "name is mandatory")
   private String name;
 
+  @NotBlank(message = "image url is mandatory")
   private String imageUrl;
 
   @SuppressWarnings("unchecked")

@@ -20,7 +20,7 @@ public class ProductSearchDAO {
         .errorHandler(new RestTemplateResponseErrorHandler())
         .build();
     ResponseEntity<String> responseEntity = restTemplate.getForEntity(
-        "https://www.mec.ca/api/v10/products/search?keywords="+keyword, String.class);
+        "https://www.mec.ca/api/v1/products/search?keywords="+keyword, String.class);
     return responseEntity.getBody();
     }
   }
