@@ -16,7 +16,7 @@ public class ProductSearchDAO {
   @Autowired
   private RestTemplateBuilder restTemplateBuilder;
 
-  @Value("${MEC.product.search.url}")
+  @Value("${mec.product.search.url}")
   private String productSearchUrl;
 
   public String getProducts(String keyword){
