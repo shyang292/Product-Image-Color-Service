@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,12 @@ public class ProductImageColourService {
 
   @Autowired
   private ImageColorDAO imageColorDAO;
+
+  @Value("${mec.cdn.name}")
+  private String mecCdnName;
+
+  @Value("${mec.imgix.name}")
+  private String mecImgixNet;
 
   public List<ProductDTO> getProductImageColour(String keyword) throws IOException {
     String productSearchString = productSearchDAO.getProducts(keyword);
@@ -33,7 +40,7 @@ public class ProductImageColourService {
       //1. replace cdn.mec.ca with mec.imgix.net
       ProductDTO productDTO = list.get(i);
       String imageUrl = productDTO.getImageUrl();
-      imageUrl = imageUrl.replaceAll("cdn.mec.ca", "mec.imgix.net");
+      imageUrl = imageUrl.replaceAll(mecCdnName, mecImgixNet);
       //2. add palette=json parameter
       String imageReult = imageColorDAO.getColors(imageUrl);
       ColorPaletteResult colorPaletteResult = new ObjectMapper()
