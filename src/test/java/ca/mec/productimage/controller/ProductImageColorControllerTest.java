@@ -61,7 +61,7 @@ class ProductImageColorControllerTest {
                     new Color(), new Color(), new Color()))
         )
     );
-    mockMvc.perform(get("/product-image-color/bike")
+    mockMvc.perform(get("/api/v1/product-image-color/search?keyword=bike")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
