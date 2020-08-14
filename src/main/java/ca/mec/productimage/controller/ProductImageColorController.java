@@ -13,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("product-image-color")
+@RequestMapping("/api/v1/product-image-color")
 @Api(value = "Product Image Color Service", description = "a web service for determinging the main colors for product images from MEC catalog")
 public class ProductImageColorController {
 
@@ -24,9 +25,9 @@ public class ProductImageColorController {
   private ProductImageColourService productImageColourService;
 
 
-  @GetMapping("/{keyword}")
+  @GetMapping("/search")
   @ApiOperation(value = "return the product code, name and image uri for the first 5 products along with colours as hex codes", response = ProductDTO.class)
-  public List<ProductDTO> getProductImageColors(@PathVariable String keyword) throws IOException {
+  public List<ProductDTO> getProductImageColors(@RequestParam String keyword) throws IOException {
     return productImageColourService.getProductImageColour(keyword);
   }
 

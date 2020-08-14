@@ -7,6 +7,7 @@ import ca.mec.productimage.dto.ProductDTO;
 import ca.mec.productimage.model.ColorPaletteResult;
 import ca.mec.productimage.model.ProductSearchResult;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ProductImageColourService {
   @Value("${mec.product.image.color.service.result.size}")
   private int size;
 
-  public List<ProductDTO> getProductImageColour(String keyword) throws IOException {
+  public List<ProductDTO> getProductImageColour(String keyword) throws JsonProcessingException {
     String productSearchString = productSearchDAO.getProducts(keyword);
     objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
     ProductSearchResult searchProducts = objectMapper
