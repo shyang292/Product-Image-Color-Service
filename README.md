@@ -7,6 +7,10 @@ This service has been deployed to AWS, you can use following url to play with it
 ```
 http://productimagecolorservice-env.eba-bp2ipzt2.us-east-1.elasticbeanstalk.com/api/v1/product-image-color/search?keyword=bike
 ```
+or by Curl
+```
+curl http://productimagecolorservice-env.eba-bp2ipzt2.us-east-1.elasticbeanstalk.com/api/v1/product-image-color/search?keyword=bike
+```
 
 ## Getting Started
 
