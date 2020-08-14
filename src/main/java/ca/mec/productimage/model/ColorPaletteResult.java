@@ -2,7 +2,6 @@ package ca.mec.productimage.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

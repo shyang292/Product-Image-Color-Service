@@ -23,8 +23,6 @@ public class ProductImageColorController {
   @Autowired
   private ProductImageColourService productImageColourService;
 
-  @Autowired
-  private ImageColorDAO imageColourDAO;
 
   @GetMapping("/{keyword}")
   @ApiOperation(value = "return the product code, name and image uri for the first 5 products along with colours as hex codes", response = ProductDTO.class)

@@ -9,11 +9,14 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@AllArgsConstructor
+//@AllArgsConstructor
 public class Color {
+
 
   @NotBlank(message = "hex color is mandatory")
   @ApiModelProperty(notes = "main color as hex codes")
   private String hex;
+
+
 
 }

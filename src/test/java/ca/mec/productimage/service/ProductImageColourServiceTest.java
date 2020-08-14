@@ -21,17 +21,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import sun.jvm.hotspot.utilities.Assert;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(SpringExtension.class)
-@TestPropertySource(properties = {"mec.product.image.color.service.result.size=5"})
+@TestPropertySource(properties = {"mec.product.image.color.service.result.size=5", "mec.cdn.name=\"cdn.mec.ca\"","mec.imgix.name=\"mec.imgix.net\""})
 class ProductImageColourServiceTest {
 
   @InjectMocks
@@ -53,8 +51,6 @@ class ProductImageColourServiceTest {
 
   @Test
   void getProductImageColour() throws IOException {
-    System.out.println(size);
-    Assertions.assertTrue(size == 5);
     String keyword = "bike";
     String productResult = "{products : "
         + "["
@@ -73,51 +69,52 @@ class ProductImageColourServiceTest {
     List<ProductDTO> list = Arrays.asList(
         new ProductDTO("6005-445", "Kanzo A Bicycle 2020",
         "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9066744676382/6005445-ASG01-fallback.jpg",
-        Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-            new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474"))),
+            Arrays.asList(new Color(), new Color(), new Color(),
+            new Color(), new Color(), new Color())),
         new ProductDTO("6006-020", "2020 Habit 6 Bicycle",
             "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9058549202974/6006020-BK000-fallback.jpg",
-            Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-                new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474"))),
+            Arrays.asList(new Color(), new Color(), new Color(),
+                new Color(), new Color(), new Color())),
         new ProductDTO("6006-062", "2020 Fat CAAD 1 Bicycle",
             "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9052109209630/6006062-GYY00-fallback.jpg",
-            Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-                new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474"))),
+            Arrays.asList(new Color(), new Color(), new Color(),
+                new Color(), new Color(), new Color())),
         new ProductDTO("6005-990", "2020 Synapse Tiagra Bicycle",
             "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9055023792158/6005990-MDN00-fallback.jpg",
-            Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-                new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474"))),
+            Arrays.asList(new Color(), new Color(), new Color(),
+                new Color(), new Color(), new Color())),
         new ProductDTO("6006-017", "2020 Habit 3 Bicycle",
             "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9067250974750/6006017-UVT00-fallback.jpg",
-            Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-                new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474"))),
+            Arrays.asList(new Color(), new Color(), new Color(),
+                new Color(), new Color(), new Color())),
         new ProductDTO("6006-105", "2020 Quick Neo 2 SL Remixte E-Bicycle",
             "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9067251761182/6006105-TRQ00-fallback.jpg",
-            Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-                new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474")))
+            Arrays.asList(new Color(), new Color(), new Color(),
+                new Color(), new Color(), new Color()))
         );
     productSearchResult.setProducts(list);
     ColorPaletteResult colorPaletteResult = new ColorPaletteResult();
-    colorPaletteResult.setColors(Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-        new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474")));
+    colorPaletteResult.setColors(Arrays.asList(new Color(), new Color(), new Color(),
+        new Color(), new Color(), new Color()));
     Assertions.assertNotNull(objectMapper);
     Mockito.lenient().when(objectMapper.readerFor(any(Class.class))).thenReturn(objectReader);
     Mockito.lenient().when(objectReader.readValue(anyString())).thenReturn(
         productSearchResult, colorPaletteResult
     );
-    ProductSearchResult searchProducts = objectMapper
-        .readerFor(ProductSearchResult.class)
-        .readValue(productResult);
-    Assertions.assertNotNull(searchProducts);
-    List<ProductDTO> productDTOList = searchProducts.getProducts();
-    List<ProductDTO> resultList = new ArrayList<>();
-    Assertions.assertTrue(productDTOList.size()>0);
-    ColorPaletteResult actualColorPaletteResult = objectMapper
-        .readerFor(ColorPaletteResult.class)
-        .readValue(colorResult);
-    Assertions.assertNotNull(colorPaletteResult);
-    Assertions.assertEquals(actualColorPaletteResult.getColors(), Arrays.asList(new Color("#0d0d11"), new Color("#383739"), new Color("#534539"),
-        new Color("#808183"), new Color("#a7a7a8"), new Color("#c39474")));
+
+    ReflectionTestUtils.setField(productImageColourService, "size", 5);
+    ReflectionTestUtils.setField(productImageColourService, "mecCdnName", "cdn.mec.ca");
+    ReflectionTestUtils.setField(productImageColourService, "mecImgixNet", "mec.imgix.net");
+    Assertions.assertNotNull(productImageColourService);
+    List<ProductDTO> resultList = productImageColourService.getProductImageColour(keyword);
+    Assertions.assertNotNull(resultList);
+    Assertions.assertTrue(resultList.size()>0);
+    Assertions.assertNotNull(resultList.get(0));
+    Assertions.assertEquals(resultList.get(0).getCode(), "6005-445");
+    Assertions.assertEquals(resultList.get(0).getName(), "Kanzo A Bicycle 2020");
+    Assertions.assertEquals(resultList.get(0).getImageUrl(), "https://cdn.mec.ca/medias/sys_master/fallback/fallback/9066744676382/6005445-ASG01-fallback.jpg");
+    Assertions.assertTrue(resultList.get(0).getColors().size()>0);
+
   }
 
   @Test
