@@ -1,6 +1,5 @@
 package ca.mec.productimage.exception;
 
-
 import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
@@ -32,12 +31,12 @@ public class RestTemplateResponseErrorHandler
         .series() == HttpStatus.Series.SERVER_ERROR) {
       //Handle SERVER_ERROR
       throw new HttpServerErrorException(httpResponse.getStatusCode());
+    }else if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+      throw new NotFoundException();
     } else if (httpResponse
         .getStatusCode()
         .series() == HttpStatus.Series.CLIENT_ERROR) {
       throw new HttpClientErrorException(httpResponse.getStatusCode());
-    }else if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException();
     }
   }
 }
