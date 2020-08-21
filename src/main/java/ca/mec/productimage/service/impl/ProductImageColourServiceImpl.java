@@ -46,7 +46,7 @@ public class ProductImageColourServiceImpl implements ProductImageColourService 
         .readValue(productSearchString);
     List<ProductDTO> list = searchProducts.getProducts();
     List<ProductDTO> resultList = new ArrayList<>();
-    size = Math.max(size, list.size());
+    size = Math.min(size, list.size());
     for (int i = 0; i < size; i++) {
       //1. replace cdn.mec.ca with mec.imgix.net
       ProductDTO productDTO = list.get(i);
