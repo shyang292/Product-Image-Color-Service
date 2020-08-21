@@ -9,6 +9,7 @@ import ca.mec.productimage.dto.ProductDTO;
 import ca.mec.productimage.model.Color;
 import ca.mec.productimage.model.ColorPaletteResult;
 import ca.mec.productimage.model.ProductSearchResult;
+import ca.mec.productimage.service.impl.ProductImageColourServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import java.io.IOException;
@@ -33,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 class ProductImageColourServiceTest {
 
   @InjectMocks
-  private ProductImageColourService productImageColourService;
+  private ProductImageColourServiceImpl productImageColourService;
 
   @Mock
   private ProductSearchDAO productSearchDAO;
