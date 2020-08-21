@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductImageColorController.class)
-class ProductImageColorControllerTest {
+class ProductImageColorControllerUnitTest {
 
   @Autowired
   private MockMvc mockMvc;
